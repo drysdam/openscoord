@@ -11,15 +11,6 @@ proc distance {start end} {
 	return [expr sqrt($summedsqs)]
 }
 
-# TODO
-# - dim ends type (arrow vs cross, for instance)
-# - plane or line datums
-# - intelligent dimension placement
-# - tolerances, including handling of fractions
-# - openscad -> image plane coordinate transform
-# - info block
-# - internal features how??
-
 set datumf [lindex $argv 0]
 set imginf [lindex $argv 1]
 set projecting [lindex $argv 2]
@@ -94,7 +85,7 @@ foreach pair $dimpairs {
 	set text1 [expr ($sd1 + $ed1)/2.0]
 	set text2 [expr ($sd2 + $ed2)/2.0]
 
-	append cmds "-draw \{[list line $sd1,$sd2 $ed1,$ed2]\} -draw \{[list text $text1,$text2 \"$dist\"]\} "
+	append cmds "-draw \{[list line $sd1,$sd2 $ed1,$ed2]\} -draw \{[list text $text1,$text2 '$dist']\} "
 }
 
 exec convert -stroke black {*}$cmds $imginf $imgoutf
