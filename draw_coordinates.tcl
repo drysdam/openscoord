@@ -11,10 +11,16 @@ proc arrow-on {sx sy ex ey} {
 		} else {
 			set thetad 270
 		}
+	} elseif {$rise == 0} {
+		if {$run > 0} {
+			set thetad 0
+		} else {
+			set thetad 180
+		}
 	} else {
 		set thetad [expr atan($rise/$run) * 180/3.14159]
 	}
-    set cmd "-draw \{translate $ex,$ey rotate $thetad $arrow_head\}"
+    set cmd " -draw \{translate $ex,$ey rotate $thetad $arrow_head\} "
 	return $cmd
 }
 
@@ -48,9 +54,11 @@ close $fh
 set fh [open $dimsf r]
 set dimpairs {}
 while {[gets $fh line] >= 0} {
-	lassign [split $line " "] proj d1 d2
+	set l [string trim $line]
+	if {[string index $l 0] == "#"} { continue }
+	lassign [split $l " "] proj d1 d2 style
 	if {$proj eq $projecting} {
-		lappend dimpairs [list $d1 $d2]
+		lappend dimpairs [list $d1 $d2 $style]
 	}
 }
 close $fh
@@ -77,7 +85,7 @@ if {$projecting eq "x"} {
 
 set cmds ""
 foreach pair $dimpairs {
-	lassign $pair startdatum enddatum
+	lassign $pair startdatum enddatum style
 
 	set startpt {}
 	set endpt {}
@@ -104,10 +112,28 @@ foreach pair $dimpairs {
 	set text2 [expr ($sd2 + $ed2)/2.0]
 
 	append cmds " -draw \{line $sd1,$sd2 $ed1,$ed2\} -draw \{text $text1,$text2 '$dist'\} "
-	append cmds [arrow-on $sd1 $sd2 $ed1 $ed2]
+
+	set startstyle [string index $style 0]
+	set endstyle [string index $style 1]
+
+	if {$startstyle == "."} {
+		# plain start, do nothing
+	} 
+	if {$startstyle == "a"} {
+		# arrow on beginning, so draw one on the reversed line
+		append cmds [arrow-on $ed1 $ed2 $sd1 $sd2]
+	}
+	
+	if {$endstyle == "."} {
+		# plain end, do nothing
+	} 
+	if {$endstyle == "a"} {
+		# arrow on end, so draw one
+		append cmds [arrow-on $sd1 $sd2 $ed1 $ed2]
+	}
 }
 
 #append cmds " -draw {line 500,500 600,600} [arrow-on 500 500 600 600] "
 
-puts "convert -stroke black {*}$cmds $imginf $imgoutf"
+#puts "convert -stroke black {*}$cmds $imginf $imgoutf"
 exec convert -stroke black {*}$cmds $imginf $imgoutf
