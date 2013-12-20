@@ -18,6 +18,7 @@ proc distance {start end} {
 # - tolerances, including handling of fractions
 # - openscad -> image plane coordinate transform
 # - info block
+# - internal features how??
 
 set datumf [lindex $argv 0]
 set imginf [lindex $argv 1]
