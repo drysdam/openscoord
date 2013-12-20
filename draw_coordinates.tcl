@@ -1,5 +1,23 @@
 #!/usr/bin/env tclsh8.5
 
+proc arrow-on {sx sy ex ey} {
+	# draw tip first so it's exactly where the end of the line is
+	set arrow_head "path 'M 0,0 l -15,-5  +5,+5  -5,+5  +15,-5 z'"
+	set rise [expr ($ey - $sy)]
+	set run [expr ($ex - $sx)]
+	if {$run == 0} {
+		if {$rise > 0} {
+			set thetad 90
+		} else {
+			set thetad 270
+		}
+	} else {
+		set thetad [expr atan($rise/$run) * 180/3.14159]
+	}
+    set cmd "-draw \{translate $ex,$ey rotate $thetad $arrow_head\}"
+	return $cmd
+}
+
 # handles any number of dimensions, as long as they are the same for
 # both
 proc distance {start end} {
@@ -85,8 +103,11 @@ foreach pair $dimpairs {
 	set text1 [expr ($sd1 + $ed1)/2.0]
 	set text2 [expr ($sd2 + $ed2)/2.0]
 
-	append cmds "-draw \{[list line $sd1,$sd2 $ed1,$ed2]\} -draw \{[list text $text1,$text2 '$dist']\} "
+	append cmds " -draw \{line $sd1,$sd2 $ed1,$ed2\} -draw \{text $text1,$text2 '$dist'\} "
+	append cmds [arrow-on $sd1 $sd2 $ed1 $ed2]
 }
 
+#append cmds " -draw {line 500,500 600,600} [arrow-on 500 500 600 600] "
+
+puts "convert -stroke black {*}$cmds $imginf $imgoutf"
 exec convert -stroke black {*}$cmds $imginf $imgoutf
-#exec convert -stroke black -draw {line 240,500 200,500} -draw {line 240,375 200,375} -draw {text 210,438 ".125"} $imginf $imgoutf
