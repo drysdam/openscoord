@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# XY (plan)
+~/software/openscad/openscad --render --imgsize=1000,1000 --projection=o --camera=0,0,0,180,0,0,5000 -o coordinates/eccentric-strap-xy.png eccentric-strap.scad 2>&1| grep DATUM > coordinates/eccentric_strap.data
+
+# XZ (elevation)
+~/software/openscad/openscad --render --imgsize=1000,1000 --projection=o --camera=0,0,0,90,0,0,5000 -o coordinates/eccentric-strap-xz.png eccentric-strap.scad 2>&1| grep DATUM > coordinates/eccentric_strap.data
+
+# YZ (side elevation)
+~/software/openscad/openscad --render --imgsize=1000,1000 --projection=o --camera=0,0,0,90,0,90,5000 -o coordinates/eccentric-strap-yz.png eccentric-strap.scad 2>&1| grep DATUM > coordinates/eccentric_strap.data
+
+# XZ (plan) dimensions
+#~/progs/tcl/draw_coordinates.tcl coordinates/eccentric_strap.data coordinates/eccentric-strap-xz.png y
