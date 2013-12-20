@@ -1,13 +1,25 @@
 #!/bin/bash
 
-# XY (plan)
+# XY (plan) dimensions
+# first, generate image and output datum points to .data file
 openscad --render --imgsize=1000,1000 --projection=o --camera=0,0,0,180,0,0,5000 -o examples/eccentric-strap-xy.png examples/eccentric-strap.scad 2>&1| grep DATUM > examples/eccentric_strap.data
 
-# XZ (elevation)
+# then alter image, using data file, dimensioning specs and noting
+# which axis we are projecting along
+draw_coordinates.tcl examples/eccentric_strap.data examples/eccentric-strap-xy.png z examples/eccentric-strap.dims
+
+# XZ (elevation) dimensions
+# first, generate image and output datum points to .data file
 openscad --render --imgsize=1000,1000 --projection=o --camera=0,0,0,90,0,0,5000 -o examples//eccentric-strap-xz.png examples/eccentric-strap.scad 2>&1| grep DATUM > examples/eccentric_strap.data
 
-# YZ (side elevation)
+# then alter image, using data file, dimensioning specs and noting
+# which axis we are projecting along
+draw_coordinates.tcl examples/eccentric_strap.data examples/eccentric-strap-xz.png y examples/eccentric-strap.dims
+
+# YZ (side elevation) dimensions
+# first, generate image and output datum points to .data file
 openscad --render --imgsize=1000,1000 --projection=o --camera=0,0,0,90,0,90,5000 -o examples//eccentric-strap-yz.png examples/eccentric-strap.scad 2>&1| grep DATUM > examples/eccentric_strap.data
 
-# XZ (plan) dimensions
-#draw_examples/.tcl examples//eccentric_strap.data examples//eccentric-strap-xz.png y
+# then alter image, using data file, dimensioning specs and noting
+# which axis we are projecting along
+draw_coordinates.tcl examples/eccentric_strap.data examples/eccentric-strap-yz.png x examples/eccentric-strap.dims
