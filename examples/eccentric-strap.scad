@@ -1,4 +1,4 @@
-pad=.1; // to preserve manifold
+pad=1; // to preserve manifold
 
 // for all
 height = 125;
