@@ -38,27 +38,26 @@ proc distance {start end} {
 set datumf [lindex $argv 0]
 set imginf [lindex $argv 1]
 set projecting [lindex $argv 2]
-set dimsf [lindex $argv 3]
 
 set fh [open $datumf r]
 array unset data
-while {[gets $fh line] >= 0} {
-	set datumdef [lindex [split $line \"] 1]
-	lassign [split $datumdef " "] junk name x y z
-	set data($name,x) $x
-	set data($name,y) $y
-	set data($name,z) $z
-}
-close $fh
-
-set fh [open $dimsf r]
 set dimpairs {}
 while {[gets $fh line] >= 0} {
-	set l [string trim $line]
-	if {[string index $l 0] == "#"} { continue }
-	lassign [split $l " "] proj d1 d2 style
-	if {$proj eq $projecting} {
-		lappend dimpairs [list $d1 $d2 $style]
+	set datumdef [lindex [split $line \"] 1]
+	set type [lindex $datumdef 0]
+	switch -exact -- $type {
+		"DATUM" {
+			lassign [split $datumdef " "] junk name x y z
+			set data($name,x) $x
+			set data($name,y) $y
+			set data($name,z) $z
+		}
+		"DIM" {
+			lassign [split $datumdef " "] junk proj d1 d2 style
+			if {$proj eq $projecting} {
+				lappend dimpairs [list $d1 $d2 $style]
+			}
+		}
 	}
 }
 close $fh
