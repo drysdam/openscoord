@@ -1,6 +1,6 @@
 // xy (plan)
-echo("DIM z CENTER INNER-RAD .a");
-echo("DIM z CENTER OUTER-RAD .a");
+echo("DIM z CENTER INNER-RAD +a");
+echo("DIM z CENTER OUTER-RAD +a");
 echo("DIM z CENTER STUB-END .a");
 echo("DIM z STUB-SIDE-1 STUB-SIDE-2 aa");
 echo("DIM z RADIUS-CENTER RADIUS-RAD .a");
@@ -20,8 +20,11 @@ echo(str("DATUM FACE-2 0 0 ", height));
 outerradius = 250;
 innerradius = 375/2.0;
 echo(str("DATUM CENTER 0 0 0"));
-echo(str("DATUM INNER-RAD 0 ", -innerradius, " 0"));
-echo(str("DATUM OUTER-RAD 0 ", outerradius, " 0"));
+
+// put these at an angle so they look better and don't block the
+// center crosshairs
+echo(str("DATUM INNER-RAD ", innerradius*sin(45), " ", innerradius*cos(45), " 0"));
+echo(str("DATUM OUTER-RAD ", outerradius*sin(-45), " ", outerradius*cos(-45), " 0"));
 
 // stub
 width = 5/32 * 1000;
