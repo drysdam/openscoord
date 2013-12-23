@@ -47,7 +47,10 @@ TODO
  - intelligent dimension placement
  - info block
  - internal features how??
-   - (use a drawing with a difference() that does the cutaway,
-     revealing the feature)
+    - use a drawing with a difference() that does the cutaway,
+    revealing the feature. 
+	- that's great for that plane, but what about hidden lines in ALL
+    planes? maybe generate two versions of each drawing, one cut and
+    one uncut, subtrace them and draw the diff as a dotted line?
  - angular dimensions
  - calling out of threads, finish types, etc
