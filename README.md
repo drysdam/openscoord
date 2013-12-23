@@ -51,3 +51,4 @@ TODO
    - (use a drawing with a difference() that does the cutaway,
      revealing the feature)
  - angular dimensions
+ - calling out of threads, finish types, etc
