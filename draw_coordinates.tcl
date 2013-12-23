@@ -70,6 +70,7 @@ proc distance {start end} {
 set datumf [lindex $argv 0]
 set imginf [lindex $argv 1]
 set projecting [lindex $argv 2]
+set pixelsperunit [lindex $argv 3]
 
 set fh [open $datumf r]
 array unset data
@@ -147,14 +148,19 @@ foreach pair $dimpairs {
 	}
 
 	# coordinate transform to image plane
-	set sd1 [expr $sd1 + 500]
-	set ed1 [expr $ed1 + 500]
-	set sd2 [expr 500 - $sd2]
-	set ed2 [expr 500 - $ed2]
-	set text1 [expr ($sd1 + $ed1)/2.0]
-	set text2 [expr ($sd2 + $ed2)/2.0]
+	set sp1 [expr $sd1 * $pixelsperunit]
+	set ep1 [expr $ed1 * $pixelsperunit]
+	set sp2 [expr $sd2 * $pixelsperunit]
+	set ep2 [expr $ed2 * $pixelsperunit]
 
-	append cmds " -draw \{line $sd1,$sd2 $ed1,$ed2\} -draw \{text $text1,$text2 '$disttext'\} "
+	set sp1 [expr $sp1 + 500]
+	set ep1 [expr $ep1 + 500]
+	set sp2 [expr 500 - $sp2]
+	set ep2 [expr 500 - $ep2]
+	set text1 [expr ($sp1 + $ep1)/2.0]
+	set text2 [expr ($sp2 + $ep2)/2.0]
+
+	append cmds " -draw \{line $sp1,$sp2 $ep1,$ep2\} -draw \{text $text1,$text2 '$disttext'\} "
 
 	set startstyle [string index $style 0]
 	set endstyle [string index $style 1]
@@ -164,11 +170,11 @@ foreach pair $dimpairs {
 	} 
 	if {$startstyle == "+"} {
 		# starts with crosshairs, so draw it
-		append cmds [crosshairs-at $sd1 $sd2]
+		append cmds [crosshairs-at $sp1 $sp2]
 	} 
 	if {$startstyle == "a"} {
 		# arrow on beginning, so draw one on the reversed line
-		append cmds [arrow-on $ed1 $ed2 $sd1 $sd2]
+		append cmds [arrow-on $ep1 $ep2 $sp1 $sp2]
 	}
 	
 	if {$endstyle == "."} {
@@ -176,11 +182,11 @@ foreach pair $dimpairs {
 	} 
 	if {$endstyle == "+"} {
 		# ends with crosshairs, so draw it
-		append cmds [crosshairs-on $ed1 $ed2]
+		append cmds [crosshairs-on $ep1 $ep2]
 	} 
 	if {$endstyle == "a"} {
 		# arrow on end, so draw one
-		append cmds [arrow-on $sd1 $sd2 $ed1 $ed2]
+		append cmds [arrow-on $sp1 $sp2 $ep1 $ep2]
 	}
 }
 

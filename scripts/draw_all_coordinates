@@ -2,6 +2,7 @@
 
 MODELNAME=$1
 D=$2
+PIXELSPERUNIT=$(echo "scale=6; 5000/$D" | bc)
 
 # XY (plan) dimensions
 # first, generate image and output datum points to .data file
@@ -9,7 +10,7 @@ openscad --render --imgsize=1000,1000 --projection=o --camera=0,0,0,180,0,0,$D -
 
 # then alter image, using data file, dimensioning specs and noting
 # which axis we are projecting along
-draw_coordinates.tcl examples/$MODELNAME.data examples/$MODELNAME-xy.png z examples/$MODELNAME.dims
+draw_coordinates.tcl examples/$MODELNAME.data examples/$MODELNAME-xy.png z $PIXELSPERUNIT
 
 # XZ (elevation) dimensions
 # first, generate image and output datum points to .data file
@@ -17,7 +18,7 @@ openscad --render --imgsize=1000,1000 --projection=o --camera=0,0,0,90,0,0,$D -o
 
 # then alter image, using data file, dimensioning specs and noting
 # which axis we are projecting along
-draw_coordinates.tcl examples/$MODELNAME.data examples/$MODELNAME-xz.png y examples/$MODELNAME.dims
+draw_coordinates.tcl examples/$MODELNAME.data examples/$MODELNAME-xz.png y $PIXELSPERUNIT
 
 # YZ (side elevation) dimensions
 # first, generate image and output datum points to .data file
@@ -25,4 +26,4 @@ openscad --render --imgsize=1000,1000 --projection=o --camera=0,0,0,90,0,90,$D -
 
 # then alter image, using data file, dimensioning specs and noting
 # which axis we are projecting along
-draw_coordinates.tcl examples/$MODELNAME.data examples/$MODELNAME-yz.png x examples/$MODELNAME.dims
+draw_coordinates.tcl examples/$MODELNAME.data examples/$MODELNAME-yz.png x $PIXELSPERUNIT
