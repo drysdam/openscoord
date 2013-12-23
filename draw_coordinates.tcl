@@ -9,6 +9,7 @@ proc crosshairs-at {x y} {
 
 # draws arrow on END tip (reverse line for start)
 proc arrow-on {sx sy ex ey} {
+	#puts "$sx $sy $ex $ey"
 	set arrow_head "path 'M 0,0 l -15,-5  +5,+5  -5,+5  +15,-5 z'"
 	set rise [expr ($ey - $sy)]
 	set run [expr ($ex - $sx)]
@@ -26,6 +27,10 @@ proc arrow-on {sx sy ex ey} {
 		}
 	} else {
 		set thetad [expr atan($rise/$run) * 180/3.14159]
+		# determine quadrant for negative runs
+		if {$run < 0} {
+			set thetad [expr fmod($thetad+180,360.0)]
+		}
 	}
     set cmd " -draw \{translate $ex,$ey rotate $thetad $arrow_head\} "
 	return $cmd
