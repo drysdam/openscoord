@@ -1,9 +1,9 @@
 // xy (plan)
-echo("DIM z CENTER INNER-RAD +a f");
+echo("DIM z INNER-DIA-1 INNER-DIA-2 aa d");
 echo("DIM z CENTER OUTER-RAD +a f");
 echo("DIM z CENTER STUB-END .a f");
 echo("DIM z STUB-SIDE-1 STUB-SIDE-2 aa f");
-echo("DIM z RADIUS-CENTER RADIUS-RAD .a f");
+echo("DIM z RADIUS-CENTER RADIUS-RAD +a f");
 // xz (elevation)
 echo("DIM y FACE-1 FACE-2 aa d");
 // yz (side elevation)
@@ -23,7 +23,8 @@ echo(str("DATUM CENTER 0 0 0"));
 
 // put these at an angle so they look better and don't block the
 // center crosshairs
-echo(str("DATUM INNER-RAD ", innerradius*sin(45), " ", innerradius*cos(45), " 0"));
+echo(str("DATUM INNER-DIA-1 0 ", -innerradius, " 0"));
+echo(str("DATUM INNER-DIA-2 0 ", innerradius, " 0"));
 echo(str("DATUM OUTER-RAD ", outerradius*sin(-45), " ", outerradius*cos(-45), " 0"));
 
 // stub
