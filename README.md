@@ -1,13 +1,27 @@
 openscoord
 ==========
 
+About
+-----
+
+OpenSCAD is really cool. I love that I can save meaningful diffs. I
+love that I can exploit skills I already have (typing) or want to
+learn (mechanical design) without having to acquire a skill I don't
+want to spend time on (proficiency with a particular and expensive
+piece of proprietary software).
+
+However, I want to produce drawings for use with manual machines and
+OpenSCAD doesn't do that. This tool fills that gap. I wouldn't build a
+nuclear power plant with it, but if you have a certain casual and
+reckless attitude, it works.
+
 Requirements:
 -------------
 
  - a version of OpenSCAD that can write PNGs
  - Tcl 8.5 or later
  - ImageMagick
- 
+
 How to run the example:
 -----------------------
 
@@ -29,16 +43,11 @@ How to run the example:
 TODO
 ----------------
 
- - dim ends type (arrow vs cross, for instance)
  - plane or line datums
  - intelligent dimension placement
- - tolerances, including handling of fractions
  - openscad -> image plane coordinate transform
  - info block
  - internal features how??
    - (use a drawing with a difference() that does the cutaway,
      revealing the feature)
  - angular dimensions
- - OpenSCAD will only do math to 3 decimal places, which is *just
-   barely* enough to indicate normal dimensions, let alone do any math
-   in, express tolerances or do precision work. What can be done about this?
