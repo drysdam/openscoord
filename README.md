@@ -39,3 +39,6 @@ TODO
    - (use a drawing with a difference() that does the cutaway,
      revealing the feature)
  - angular dimensions
+ - OpenSCAD will only do math to 3 decimal places, which is *just
+   barely* enough to indicate normal dimensions, let alone do any math
+   in, express tolerances or do precision work. What can be done about this?
