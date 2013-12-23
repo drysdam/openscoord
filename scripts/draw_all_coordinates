@@ -1,25 +1,28 @@
 #!/bin/bash
 
+MODELNAME=$1
+D=$2
+
 # XY (plan) dimensions
 # first, generate image and output datum points to .data file
-openscad --render --imgsize=1000,1000 --projection=o --camera=0,0,0,180,0,0,5000 -o examples/eccentric-strap-xy.png examples/eccentric-strap.scad 2>&1| grep "DATUM\|DIM" > examples/eccentric-strap.data
+openscad --render --imgsize=1000,1000 --projection=o --camera=0,0,0,180,0,0,$D -o examples/$MODELNAME-xy.png examples/$MODELNAME.scad 2>&1| grep "DATUM\|DIM" > examples/$MODELNAME.data
 
 # then alter image, using data file, dimensioning specs and noting
 # which axis we are projecting along
-draw_coordinates.tcl examples/eccentric-strap.data examples/eccentric-strap-xy.png z examples/eccentric-strap.dims
+draw_coordinates.tcl examples/$MODELNAME.data examples/$MODELNAME-xy.png z examples/$MODELNAME.dims
 
 # XZ (elevation) dimensions
 # first, generate image and output datum points to .data file
-openscad --render --imgsize=1000,1000 --projection=o --camera=0,0,0,90,0,0,5000 -o examples//eccentric-strap-xz.png examples/eccentric-strap.scad 2>&1| grep "DATUM\|DIM" > examples/eccentric-strap.data
+openscad --render --imgsize=1000,1000 --projection=o --camera=0,0,0,90,0,0,$D -o examples/$MODELNAME-xz.png examples/$MODELNAME.scad 2>&1| grep "DATUM\|DIM" > examples/$MODELNAME.data
 
 # then alter image, using data file, dimensioning specs and noting
 # which axis we are projecting along
-draw_coordinates.tcl examples/eccentric-strap.data examples/eccentric-strap-xz.png y examples/eccentric-strap.dims
+draw_coordinates.tcl examples/$MODELNAME.data examples/$MODELNAME-xz.png y examples/$MODELNAME.dims
 
 # YZ (side elevation) dimensions
 # first, generate image and output datum points to .data file
-openscad --render --imgsize=1000,1000 --projection=o --camera=0,0,0,90,0,90,5000 -o examples//eccentric-strap-yz.png examples/eccentric-strap.scad 2>&1| grep "DATUM\|DIM" > examples/eccentric-strap.data
+openscad --render --imgsize=1000,1000 --projection=o --camera=0,0,0,90,0,90,$D -o examples/$MODELNAME-yz.png examples/$MODELNAME.scad 2>&1| grep "DATUM\|DIM" > examples/$MODELNAME.data
 
 # then alter image, using data file, dimensioning specs and noting
 # which axis we are projecting along
-draw_coordinates.tcl examples/eccentric-strap.data examples/eccentric-strap-yz.png x examples/eccentric-strap.dims
+draw_coordinates.tcl examples/$MODELNAME.data examples/$MODELNAME-yz.png x examples/$MODELNAME.dims
