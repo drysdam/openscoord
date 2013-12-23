@@ -27,7 +27,7 @@ How to run the example:
 
 1. make sure the png-producing OpenSCAD is in your path. 
 2. add `openscoord/` to your path
-3. run `scripts/draw_all_coordinates`
+3. run `scripts/draw_all_coordinates eccentric-strap 5000`
 4. this should have created 3 orthogonal views of the example part:
 
     - examples/eccentric-strap-xy.png
