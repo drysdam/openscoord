@@ -38,3 +38,4 @@ TODO
  - internal features how??
    - (use a drawing with a difference() that does the cutaway,
      revealing the feature)
+ - angular dimensions
