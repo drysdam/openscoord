@@ -1,13 +1,13 @@
 // xy (plan)
-echo("DIM z CENTER INNER-RAD +a");
-echo("DIM z CENTER OUTER-RAD +a");
-echo("DIM z CENTER STUB-END .a");
-echo("DIM z STUB-SIDE-1 STUB-SIDE-2 aa");
-echo("DIM z RADIUS-CENTER RADIUS-RAD .a");
+echo("DIM z CENTER INNER-RAD +a f");
+echo("DIM z CENTER OUTER-RAD +a f");
+echo("DIM z CENTER STUB-END .a f");
+echo("DIM z STUB-SIDE-1 STUB-SIDE-2 aa f");
+echo("DIM z RADIUS-CENTER RADIUS-RAD .a f");
 // xz (elevation)
-echo("DIM y FACE-1 FACE-2 aa");
+echo("DIM y FACE-1 FACE-2 aa d");
 // yz (side elevation)
-echo("DIM x STRAP-ARM-DIA-1 STRAP-ARM-DIA-2 aa");
+echo("DIM x STRAP-ARM-DIA-1 STRAP-ARM-DIA-2 aa f");
 
 pad=1; // to preserve manifold
 

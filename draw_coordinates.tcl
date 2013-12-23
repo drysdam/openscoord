@@ -1,5 +1,25 @@
 #!/usr/bin/env tclsh8.5
 
+proc gcd { a b } {
+	set rem [expr $a % $b]
+	if {$rem == 0} {
+		return $b
+	} else {
+		return [gcd $b $rem]
+	}
+}
+
+proc nearest_fraction { inches } {
+	set denom 64
+	set numer [format %.0f [expr $inches * $denom]]
+	set comdiv [gcd $denom $numer]
+	set numer [expr $numer/$comdiv]
+	set denom [expr $denom/$comdiv]
+	set frac "$numer/$denom"
+	#puts "$inches -> $frac"
+	return $frac
+}
+
 # crosshairs aren't directional, so just need a location
 proc crosshairs-at {x y} {
 	set crosshairs "path 'M -15,0 L +15,0 M 0,-15 L 0,+15'"
@@ -65,9 +85,9 @@ while {[gets $fh line] >= 0} {
 			set data($name,z) $z
 		}
 		"DIM" {
-			lassign [split $datumdef " "] junk proj d1 d2 style
+			lassign [split $datumdef " "] junk proj d1 d2 style format
 			if {$proj eq $projecting} {
-				lappend dimpairs [list $d1 $d2 $style]
+				lappend dimpairs [list $d1 $d2 $style $format]
 			}
 		}
 	}
@@ -96,7 +116,7 @@ if {$projecting eq "x"} {
 
 set cmds ""
 foreach pair $dimpairs {
-	lassign $pair startdatum enddatum style
+	lassign $pair startdatum enddatum style format
 
 	set startpt {}
 	set endpt {}
@@ -112,7 +132,19 @@ foreach pair $dimpairs {
 		lappend startpt $data($startdatum,$dim)
 		lappend endpt $data($enddatum,$dim)
 	}
+
+	# all numbers (so far) are thous (.001"), so 250 = 1/4"
 	set dist [distance $startpt $endpt]
+	set thous [expr int($dist)/1000.0]
+
+	switch -exact -- $format {
+		"f" {
+			set disttext "[nearest_fraction $thous]\""
+		}
+		"d" {
+			set disttext "$thous\""
+		}
+	}
 
 	# coordinate transform to image plane
 	set sd1 [expr $sd1 + 500]
@@ -122,7 +154,7 @@ foreach pair $dimpairs {
 	set text1 [expr ($sd1 + $ed1)/2.0]
 	set text2 [expr ($sd2 + $ed2)/2.0]
 
-	append cmds " -draw \{line $sd1,$sd2 $ed1,$ed2\} -draw \{text $text1,$text2 '$dist'\} "
+	append cmds " -draw \{line $sd1,$sd2 $ed1,$ed2\} -draw \{text $text1,$text2 '$disttext'\} "
 
 	set startstyle [string index $style 0]
 	set endstyle [string index $style 1]
