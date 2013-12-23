@@ -1,7 +1,14 @@
 #!/usr/bin/env tclsh8.5
 
+# crosshairs aren't directional, so just need a location
+proc crosshairs-at {x y} {
+	set crosshairs "path 'M -15,0 L +15,0 M 0,-15 L 0,+15'"
+    set cmd " -draw \{translate $x,$y $crosshairs\} "
+	return $cmd
+}
+
+# draws arrow on END tip (reverse line for start)
 proc arrow-on {sx sy ex ey} {
-	# draw tip first so it's exactly where the end of the line is
 	set arrow_head "path 'M 0,0 l -15,-5  +5,+5  -5,+5  +15,-5 z'"
 	set rise [expr ($ey - $sy)]
 	set run [expr ($ex - $sx)]
@@ -118,6 +125,10 @@ foreach pair $dimpairs {
 	if {$startstyle == "."} {
 		# plain start, do nothing
 	} 
+	if {$startstyle == "+"} {
+		# starts with crosshairs, so draw it
+		append cmds [crosshairs-at $sd1 $sd2]
+	} 
 	if {$startstyle == "a"} {
 		# arrow on beginning, so draw one on the reversed line
 		append cmds [arrow-on $ed1 $ed2 $sd1 $sd2]
@@ -125,6 +136,10 @@ foreach pair $dimpairs {
 	
 	if {$endstyle == "."} {
 		# plain end, do nothing
+	} 
+	if {$endstyle == "+"} {
+		# ends with crosshairs, so draw it
+		append cmds [crosshairs-on $ed1 $ed2]
 	} 
 	if {$endstyle == "a"} {
 		# arrow on end, so draw one
